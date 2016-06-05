@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+<head>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!--Google Web Fonts-->
+<link href='http://fonts.googleapis.com/css?family=Sigmar+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Cedarville+Cursive' rel='stylesheet' type='text/css'>
+    
+<style>
+    
+/*
+    body{
+    
+    
+    background-image: url(weather%20.jpg);
+    
+    
+    }
+*/
+    
+    
+    
+    h1{
+    
+    
+    font-weight: bold;
+    
+    
+    } 
+    
+    
+    #cloud{
+    
+    font-size: 455%;
+    margin-bottom: 0px;
+    }
+    
+     #find:hover{
+    
+    background-color: #EEEEEE;
+    color: #333333;
+    border-color: #333333;
+    }
+    
+    
+    
+    
+    #find{
+    
+    background-color: /*#333333*/#3798FE;
+    color: #EEEEEE;
+    transition: border-color 0.4s,background-color 0.5s, color 0.7s;
+    }
+    
+    
+    .jumbotron{
+    
+    position: relative;
+    top: 100px;
+    font-family: 'Bree Serif', serif;    
+    opacity: 0.7;
+   
+   
+    }
+    
+    .alert{
+    
+    display: none;
+    
+    }
+    
+    
+    video#bgvid { 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background: url(nature.jpg) no-repeat;
+    background-size: cover; 
+}
+    
+    #sig{
+    
+            color: white;
+            position: relative;
+            top: 117px;
+            font-family: 'Ubuntu', sans-serif;
+    
+    
+    
+    }
+    
+</style>
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container">
+    <div class="col-lg-8 col-lg-offset-2 text-center">
+      <span class="glyphicon glyphicon-cloud" id="cloud"></span>
+      <h1>Weather Scraper</h1>
+      <p>Enter your city below</p>
+       <form>
+        
+           <div class="form-group">
+           
+           <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input class="form-control" name="city" type="text" placeholder="Eg. Kolkata,New York,London etc" id="city" />
+               </div>
+                
+           
+           </div>
+        <input type="submit" class="btn btn-lg" value="Find out!" id="find"/>
+        <div id="success" class="alert alert-success" style="margin-top:15px"></div>
+        <div id="fail" class="alert alert-danger" style="margin-top:15px">No weather data for that city. Please try again</div>
+        <div id="noCity" class="alert alert-danger" style="margin-top:15px">Please enter a city</div>
+        <h1 id="tweets">What people are saying...</h1>
+           <br></br>
+        <h4 id="saying"></h4>
+        
+        </form>
+      </div>
+        
+    
+    
+    </div>  
+    
+    
+</div>  
+<div class="col-lg-8 col-lg-offset-2 text-center">
+<div id = "sig">Designed and coded by :<span style="font-family: 'Cedarville Cursive', cursive"> Prithaj Nath</span></div>  
+    
+
+</div>
+<video autoplay loop poster="nature.jpg" id="bgvid">
+    <source src="clouds.webm" type="video/webm">
+   
+</video>
+    
+
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    
+$("#tweets").hide();
+    
+$("#find").click(function(event){
+    
+    event.preventDefault();
+    $(".alert").hide();
+    $("#tweets").hide();
+    $("#saying").hide();
+    
+    if($("#city").val()!=""){
+
+        
+        
+    $.get("scraper.php?city="+$("#city").val(),function(data){
+        
+    if(!data.match(/failed/)){
+        
+    
+    $.get("tweets.php?city="+$("#city").val(),function(data2){
+    $("#saying").html(data2).fadeIn();
+    //console.log(data2);
+    });
+    
+    $("#success").html(data).fadeIn();
+    $("#tweets").fadeIn();
+        
+     
+    
+    
+    }else{
+    
+    
+     $("#fail").fadeIn();
+      console.log(data);  
+    
+    }
+    
+    });
+        }else{
+        
+        
+            $("#noCity").fadeIn();
+        
+        
+        }
+
+}); 
+    
+});
+    
+</script>    
+    
+    
+</body>
+</html>
